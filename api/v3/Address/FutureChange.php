@@ -22,7 +22,7 @@ function _civicrm_api3_address_futurechange_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_address_futurechange($params) {
-  $config = CRM_Adresdatum_Config::singleton();
+  $config = CRM_Futureaddress_Config::singleton();
   $cgroup = $config->getCustomGroup();
   $changeField = $config->getChangeDateField();
   $processField = $config->getProcessDateField();

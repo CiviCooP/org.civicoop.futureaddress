@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<extension key="nl.sp.adresdatum" type="module">
-  <file>adresdatum</file>
-  <name>Adres datum</name>
-  <description>Voegt datum velden aan een adres toe</description>
+<extension key="org.civicoop.futureaddress" type="module">
+  <file>futureaddress</file>
+  <name>Future address</name>
+  <description>Add functionality to make a primary address active in the future</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Jaap Jansma</author>

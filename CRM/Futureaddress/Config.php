@@ -4,7 +4,7 @@
  * Class which holds information on configuration for this extension
  */
 
-class CRM_Adresdatum_Config {
+class CRM_Futureaddress_Config {
   
   protected static $_instance;
   
@@ -20,7 +20,7 @@ class CRM_Adresdatum_Config {
   
   public static function singleton() {
     if (!self::$_instance) {
-      self::$_instance = new CRM_Adresdatum_Config();
+      self::$_instance = new CRM_Futureaddress_Config();
     }
     return self::$_instance;
   }

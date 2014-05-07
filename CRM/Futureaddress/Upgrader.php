@@ -3,7 +3,7 @@
 /**
  * Collection of upgrade steps
  */
-class CRM_Adresdatum_Upgrader extends CRM_Adresdatum_Upgrader_Base {
+class CRM_Futureaddress_Upgrader extends CRM_Futureaddress_Upgrader_Base {
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
@@ -19,7 +19,7 @@ class CRM_Adresdatum_Upgrader extends CRM_Adresdatum_Upgrader_Base {
    */
   public function uninstall() {
     //remove the custom fields and groups
-    $config = CRM_Adresdatum_Config::singleton();
+    $config = CRM_Futureaddress_Config::singleton();
     $cgroup = $config->getCustomGroup();
     $changeField = $config->getChangeDateField();
     $processField = $config->getProcessDateField();

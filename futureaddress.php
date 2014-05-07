@@ -1,14 +1,14 @@
 <?php
 
-require_once 'adresdatum.civix.php';
+require_once 'futureaddress.civix.php';
 
 /**
  * Implementation of hook_civicrm_config
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
  */
-function adresdatum_civicrm_config(&$config) {
-  _adresdatum_civix_civicrm_config($config);
+function futureaddress_civicrm_config(&$config) {
+  _futureaddress_civix_civicrm_config($config);
 }
 
 /**
@@ -18,8 +18,8 @@ function adresdatum_civicrm_config(&$config) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
  */
-function adresdatum_civicrm_xmlMenu(&$files) {
-  _adresdatum_civix_civicrm_xmlMenu($files);
+function futureaddress_civicrm_xmlMenu(&$files) {
+  _futureaddress_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -27,8 +27,8 @@ function adresdatum_civicrm_xmlMenu(&$files) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
-function adresdatum_civicrm_install() {
-  return _adresdatum_civix_civicrm_install();
+function futureaddress_civicrm_install() {
+  return _futureaddress_civix_civicrm_install();
 }
 
 /**
@@ -36,8 +36,8 @@ function adresdatum_civicrm_install() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
  */
-function adresdatum_civicrm_uninstall() {
-  return _adresdatum_civix_civicrm_uninstall();
+function futureaddress_civicrm_uninstall() {
+  return _futureaddress_civix_civicrm_uninstall();
 }
 
 /**
@@ -45,8 +45,8 @@ function adresdatum_civicrm_uninstall() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
-function adresdatum_civicrm_enable() {
-  return _adresdatum_civix_civicrm_enable();
+function futureaddress_civicrm_enable() {
+  return _futureaddress_civix_civicrm_enable();
 }
 
 /**
@@ -54,8 +54,8 @@ function adresdatum_civicrm_enable() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
  */
-function adresdatum_civicrm_disable() {
-  return _adresdatum_civix_civicrm_disable();
+function futureaddress_civicrm_disable() {
+  return _futureaddress_civix_civicrm_disable();
 }
 
 /**
@@ -69,8 +69,8 @@ function adresdatum_civicrm_disable() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_upgrade
  */
-function adresdatum_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _adresdatum_civix_civicrm_upgrade($op, $queue);
+function futureaddress_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
+  return _futureaddress_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -81,8 +81,8 @@ function adresdatum_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
  */
-function adresdatum_civicrm_managed(&$entities) {
-  return _adresdatum_civix_civicrm_managed($entities);
+function futureaddress_civicrm_managed(&$entities) {
+  return _futureaddress_civix_civicrm_managed($entities);
 }
 
 /**
@@ -94,8 +94,8 @@ function adresdatum_civicrm_managed(&$entities) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
  */
-function adresdatum_civicrm_caseTypes(&$caseTypes) {
-  _adresdatum_civix_civicrm_caseTypes($caseTypes);
+function futureaddress_civicrm_caseTypes(&$caseTypes) {
+  _futureaddress_civix_civicrm_caseTypes($caseTypes);
 }
 
 /**
@@ -103,8 +103,8 @@ function adresdatum_civicrm_caseTypes(&$caseTypes) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
  */
-function adresdatum_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _adresdatum_civix_civicrm_alterSettingsFolders($metaDataFolders);
+function futureaddress_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
+  _futureaddress_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -115,12 +115,12 @@ function adresdatum_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_custom
  */
-function adresdatum_civicrm_custom($op, $groupID, $entityID, &$params) {
+function futureaddress_civicrm_custom($op, $groupID, $entityID, &$params) {
   if ($op != 'create' && $op != 'edit') {
     return;
   }
   
-  $config = CRM_Adresdatum_Config::singleton();
+  $config = CRM_Futureaddress_Config::singleton();
   $cgroup = $config->getCustomGroup();
   $changeField = $config->getChangeDateField();
   $processField = $config->getProcessDateField();

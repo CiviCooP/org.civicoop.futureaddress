@@ -4,15 +4,15 @@
   <CustomGroups>
     <CustomGroup>
       <name>address_date</name>
-      <title>Datum</title>
+      <title>Future address</title>
       <extends>Address</extends>
       <style>Inline</style>
       <collapse_display>0</collapse_display>
-      <help_pre>&lt;p&gt;Use the date fields to make an address active for a certain date range&lt;/p&gt;</help_pre>
+      <help_pre>&lt;p&gt;Use the date field to make this the primary address in the future&lt;/p&gt;</help_pre>
       <help_post></help_post>
       <weight>7</weight>
       <is_active>1</is_active>
-      <table_name>civicrm_value_datum</table_name>
+      <table_name>civicrm_value_futureaddress</table_name>
       <is_multiple>0</is_multiple>
       <collapse_adv_display>0</collapse_adv_display>
       <created_date>2014-05-07 12:52:21</created_date>
