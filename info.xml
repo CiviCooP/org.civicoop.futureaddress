@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<extension key="nl.sp.adresdatum" type="module">
+  <file>adresdatum</file>
+  <name>Adres datum</name>
+  <description>Voegt datum velden aan een adres toe</description>
+  <license>AGPL-3.0</license>
+  <maintainer>
+    <author>Jaap Jansma</author>
+    <email>helpdesk@civicoop.org</email>
+  </maintainer>
+  <releaseDate>2014-05-07</releaseDate>
+  <version>1.0</version>
+  <develStage>alpha</develStage>
+  <compatibility>
+    <ver>4.4</ver>
+  </compatibility>
+  <comments>This is a new, undeveloped module</comments>
+  <civix>
+    <namespace>CRM/Adresdatum</namespace>
+  </civix>
+</extension>
