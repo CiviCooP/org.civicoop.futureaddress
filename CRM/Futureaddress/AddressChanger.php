@@ -4,7 +4,7 @@
  * This class checks for addresses of type (future) to be changed to type (current)
  */
 
-class CRM_Futureaddress_AddressChanger {
+class CRM_Futureaddress_AddressChanger implements CRM_Futureaddress_Interface_Changer {
   
   protected $future_type_id;
   
@@ -75,8 +75,7 @@ class CRM_Futureaddress_AddressChanger {
         
         $this->changeCount ++;
       } catch (Exception $e) {
-        $this->failureCount ++;
-        throw $e;        
+        $this->failureCount ++;    
       }
     }
   }
@@ -96,7 +95,7 @@ class CRM_Futureaddress_AddressChanger {
    * 
    * @param type $objAddress
    */
-  private function archiveAddress(CRM_Core_BAO_Address $objAddress) {
+  protected function archiveAddress(CRM_Core_BAO_Address $objAddress) {
        
     $activityParams = array();
     $activityParams['activity_type_id'] = $this->getActivityTypeId();    
@@ -108,7 +107,7 @@ class CRM_Futureaddress_AddressChanger {
     $this->changeActivityParameters($objAddress, $activityParams);
     // create the activity
     
-    $result = civicrm_api3('Activity', 'create', $activityParams);
+    civicrm_api3('Activity', 'create', $activityParams);
     
     $hooks = CRM_Utils_Hook::singleton();
     $hooks->invoke(1,
