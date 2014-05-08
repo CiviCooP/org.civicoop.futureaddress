@@ -4,7 +4,7 @@
  * This class archives an addres under an activity
  */
 
-class CRM_Futureaddrdess_AddressHistory {
+class CRM_Futureaddress_AddressHistory {
   
   protected static $_instance;
   
@@ -43,7 +43,7 @@ class CRM_Futureaddrdess_AddressHistory {
   
   public static function singleton() {
     if (!self::$_instance) {
-      self::$_instance = new CRM_Futureaddrdess_AddressHistory();
+      self::$_instance = new CRM_Futureaddress_AddressHistory();
     }
     return self::$_instance;
   }
