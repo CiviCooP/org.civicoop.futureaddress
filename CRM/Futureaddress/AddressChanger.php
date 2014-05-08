@@ -62,6 +62,11 @@ class CRM_Futureaddress_AddressChanger {
     while ($dao->fetch()) {
       try {
         $this->changeAddress($dao, $this->active_type_id);
+        
+        //update process field
+        $update = "UPDATE `".$cgroup['table_name']."` SET `".$processField['column_name']."` = CURDATE() WHERE `id` = '".$dao->rid."'";
+        CRM_Core_DAO::executeQuery($update, array(), false); //do not abort on query error
+        
         $this->changeCount ++;
       } catch (Exception $e) {
         throw $e;
@@ -123,20 +128,20 @@ class CRM_Futureaddress_AddressChanger {
     $current->contact_id = $objAddress->contact_id;
     $current->location_type_id = $change_to_type_id;
     if ($current->find(TRUE)) {
+      //set future address to primary if current active address is primary
+      if ($current->is_primary) {
+        $objAddress->is_primary = true;
+      }
+      
+      //acrhive the old address
       $this->archiveAddress($current);
+      
       //remove the old address
       CRM_Core_BAO_Address::del($current->id);
     }
    
-    /*$addressParams = array();
-    //CRM_Core_DAO::storeValues($objAddress, $addressParams);
-    
-    $addressParams['id'] = $objAddress->id;
-    $addressParams['location_type_id'] = $change_to_type_id;
-    
-    CRM_Core_BAO_Address::add($addressParams, false);*/
     $objAddress->location_type_id = $change_to_type_id;
-    $objAddress->save();
+    $objAddress->save();    
   } 
   
 }
