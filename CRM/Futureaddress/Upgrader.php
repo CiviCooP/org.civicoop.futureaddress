@@ -7,11 +7,33 @@ class CRM_Futureaddress_Upgrader extends CRM_Futureaddress_Upgrader_Base {
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
+  protected $activity_type;
+  
+  public function __construct($extensionName, $extensionDir) {
+    parent::__construct($extensionName, $extensionDir);
+    
+    $this->activity_type = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'activity_type'));
+  }
+  
   /**
    * 
    */
   public function install() {
     $this->executeCustomDataFile('xml/date_fields.xml');
+    
+    $this->addActivityType('address_change', ts('Address change'));
+    
+    $this->executeCustomDataFile('xml/address_history.xml');
+  }
+  
+  public function upgrade_1001() {
+    $this->addActivityType('address_change', ts('Address change'));
+    return true;
+  }
+  
+  public function upgrade_1002() {
+    $this->executeCustomDataFile('xml/address_history.xml');
+    return true;
   }
 
   /**
@@ -21,11 +43,48 @@ class CRM_Futureaddress_Upgrader extends CRM_Futureaddress_Upgrader_Base {
     //remove the custom fields and groups
     $config = CRM_Futureaddress_Config::singleton();
     $cgroup = $config->getCustomGroup();
-    $changeField = $config->getChangeDateField();
-    $processField = $config->getProcessDateField();
-    civicrm_api3('CustomField', 'delete', array('id' => $changeField['id']));
-    civicrm_api3('CustomField', 'delete', array('id' => $processField['id']));
-    civicrm_api3('CustomGroup', 'delete', array('id' => $cgroup['id']));
+    $this->deleteCustomGroup($cgroup['id']);
+    
+    $cgroup = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'Address_change'));
+    $this->deleteCustomGroup($cgroup['id']);
+    
+    $this->removeActivityType('address_change');
+  }
+  
+  protected function deleteCustomGroup($gid) {
+    $fields = civicrm_api3('CustomField', 'get', array('custom_group_id' => $gid));
+    foreach($fields['values'] as $field) {
+      civicrm_api3('CustomField', 'delete', array('id' => $field['id']));
+    }
+    civicrm_api3('CustomGroup', 'delete', array('id' => $gid));
+  }  
+  
+  protected function removeActivityType($name) {
+    $params['option_group_id'] = $this->activity_type['id'];
+    $params['name'] = $name;
+    try {
+      $result = civicrm_api3('OptionValue', 'getsingle', $params);
+      civicrm_api3('OptionValue', 'delete', array('id' => $result['id']));
+    } catch (Exception $e) {
+      //do nothing
+    }
+  }
+  
+  protected function addActivityType($name, $label, $is_active=true, $is_reserved=true) {
+    $params['option_group_id'] = $this->activity_type['id'];
+    $params['name'] = $name;
+    try {
+      $result = civicrm_api3('OptionValue', 'getsingle', $params);
+      return $result['id'];
+    } catch (Exception $e) {
+      //do nothing
+    }
+    $params['label'] = $label;
+    $params['is_reserved'] = $is_reserved ? '1' : '0';
+    $params['is_active'] = $is_active ? '1' : '0';
+    
+    $result = civicrm_api3('OptionValue', 'create', $params);
+    return $result['id'];
   }
 
   /**

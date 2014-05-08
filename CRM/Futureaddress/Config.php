@@ -12,7 +12,12 @@ class CRM_Futureaddress_Config {
   protected $change_date_field;
   protected $process_date_field;
   
+  protected $activity_type_option_group;
+  
   protected function __construct() {
+    
+    $this->activity_type_option_group = civicrm_api3('OptionGroup', 'getsingle', array('name' => 'activity_type'));
+    
     $this->custom_group = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'address_date'));
     $this->change_date_field = civicrm_api3('CustomField', 'getsingle', array('name' => 'Change_date', 'custom_group_id' => $this->custom_group['id']));
     $this->process_date_field = civicrm_api3('CustomField', 'getsingle', array('name' => 'Process_date', 'custom_group_id' => $this->custom_group['id']));
@@ -35,6 +40,10 @@ class CRM_Futureaddress_Config {
   
   public function getProcessDateField() {
     return $this->process_date_field;
+  }
+  
+  public function getActivityTypeOptionGroupId() {
+    return $this->activity_type_option_group['id'];
   }
 
 }

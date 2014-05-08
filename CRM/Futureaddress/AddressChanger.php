@@ -14,6 +14,8 @@ class CRM_Futureaddress_AddressChanger {
   
   protected $failureCount = 0;
   
+  protected $activity_type_id;
+  
   /**
    * Initialize the class for changing addresses
    * 
@@ -28,6 +30,10 @@ class CRM_Futureaddress_AddressChanger {
   public function __construct($future_location_type_id, $active_location_type_id) {
     $this->future_type_id = $future_location_type_id;
     $this->active_type_id = $active_location_type_id;
+    
+    $config = CRM_Futureaddress_Config::singleton();
+    $activity_type = civicrm_api3('OptionValue', 'getsingle', array('name' => 'address_change', 'option_group_id' => $config->getActivityTypeOptionGroupId()));
+    $this->activity_type_id = $activity_type['value'];
   }
   
   /**
@@ -90,18 +96,24 @@ class CRM_Futureaddress_AddressChanger {
    * 
    * @param type $objAddress
    */
-  private function archiveAddress($objAddress) {
-    return ; //@todo remove this return statement
-    throw new Exception('to be implemented');
-    
-    $activity_type_id = $this->getActivityTypeId();    
+  private function archiveAddress(CRM_Core_BAO_Address $objAddress) {
+       
     $activityParams = array();
+    $activityParams['activity_type_id'] = $this->getActivityTypeId();    
+    $activityParams['target_contacts'][] = $objAddress->contact_id;
+    $activityParams['subject'] = ts('Address change');
+    $activityParams['status_id'] = 2; //completed
+    
     
     $this->changeActivityParameters($objAddress, $activityParams);
-    //create hook so that external module could change the activity created
-    hook_call();
     // create the activity
     civicrm_api3('activity', 'create', $activityParams);
+    
+    $hooks = CRM_Utils_Hook::singleton();
+    $hooks->invoke(1,
+      $objAddress, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject,
+      'civicrm_future_address_archive_address'
+      );
   }
   
   /**
@@ -110,8 +122,15 @@ class CRM_Futureaddress_AddressChanger {
    * @param object $objAddress
    * @param array $activityParams
    */
-  protected function changeActivityParameters($objAddress, &$activityParams) {
-    //do nothing in this class
+  protected function changeActivityParameters(CRM_Core_BAO_Address $objAddress, &$activityParams) {
+    $history = CRM_Futureaddrdess_AddressHistory::singleton();
+    $history->generateActivityParams($objAddress, $activityParams);
+    
+    $hooks = CRM_Utils_Hook::singleton();
+    $hooks->invoke(2,
+      $objAddress, $activityParams, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject,
+      'civicrm_future_address_activity_parameters'
+      );
   }
   
   /**
@@ -119,7 +138,7 @@ class CRM_Futureaddress_AddressChanger {
    * 
    */
   protected function getActivityTypeId() {
-    throw new Exception('to be implemented');
+    return $this->activity_type_id;
   }
   
   private function changeAddress(CRM_Core_BAO_Address $objAddress, $change_to_type_id) {
