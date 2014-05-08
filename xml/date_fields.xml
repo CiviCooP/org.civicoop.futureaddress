@@ -8,8 +8,8 @@
       <extends>Address</extends>
       <style>Inline</style>
       <collapse_display>0</collapse_display>
-      <help_pre>&lt;p&gt;Use the date field to make this the primary address in the future&lt;/p&gt;</help_pre>
-      <help_post></help_post>
+      <help_pre></help_pre>
+      <help_post>&lt;p&gt;If you use the date field also set the location type to a future one.&lt;/p&gt;</help_post>
       <weight>7</weight>
       <is_active>1</is_active>
       <table_name>civicrm_value_futureaddress</table_name>

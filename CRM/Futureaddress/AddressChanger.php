@@ -146,12 +146,7 @@ class CRM_Futureaddress_AddressChanger implements CRM_Futureaddress_Interface_Ch
     $current = new CRM_Core_BAO_Address();
     $current->contact_id = $objAddress->contact_id;
     $current->location_type_id = $change_to_type_id;
-    if ($current->find(TRUE)) {
-      //set future address to primary if current active address is primary
-      if ($current->is_primary) {
-        $objAddress->is_primary = true;
-      }
-      
+    if ($current->find(TRUE)) {     
       //acrhive the old address
       $this->archiveAddress($current);
       
@@ -159,8 +154,16 @@ class CRM_Futureaddress_AddressChanger implements CRM_Futureaddress_Interface_Ch
       CRM_Core_BAO_Address::del($current->id);
     }
    
-    $objAddress->location_type_id = $change_to_type_id;
-    $objAddress->save();    
+    $params = array();
+    //CRM_Core_DAO::storeValues($objAddress, $params);
+    $params['id'] = $objAddress->id;
+    $params['location_type_id'] = $change_to_type_id;
+    //set future address to primary if current active address is primary
+    if ($current->is_primary) {
+      $params['is_primary']= '1';
+    }
+    
+    civicrm_api3('Address', 'create', $params);
   } 
   
 }
