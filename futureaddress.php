@@ -165,3 +165,81 @@ function futureaddress_civicrm_future_address_get_changer(CRM_Core_BAO_LocationT
   }
   return $return;
 }
+
+/**
+ * Validate the custom date fields on the address form.
+ * 
+ * Implementation of hook_civicrm_validateForm
+ * 
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_validateForm
+ * 
+ * @param type $formName
+ * @param type $fields
+ * @param type $files
+ * @param type $form
+ * @param type $errors
+ */
+function futureaddress_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$errors ) {
+  $config = CRM_AddressChanger_Config::singleton();
+  $change_date_field = $config->getChangeDateField();
+  $end_date_field = $config->getEndDateField();
+  $change_date_field_mask = 'custom_'.$change_date_field['id'].'_';
+  $end_date_field_mask = 'custom_' .$end_date_field['id']. '_';
+  if ($formName == 'CRM_Contact_Form_Contact' || $formName == 'CRM_Contact_Form_Inline_Address') {
+    foreach ($fields['address'] as $key => $address) {
+      $changeDateKey = _futureaddress_get_custom_data_by_field_mask($change_date_field_mask, $address);
+      $endDateKey = _futureaddress_get_custom_data_by_field_mask($end_date_field_mask, $address);
+      $changeDate = false;
+      $endDate = false;
+      if ($changeDateKey) {
+        $changeDate = $address[$changeDateKey];
+      }
+      if ($endDateKey) {
+        $endDate = $address[$endDateKey];
+      }
+      
+      $location_type = new CRM_Core_BAO_LocationType();
+      $location_type->id = $address['location_type_id'];
+      if ($location_type->find(true)) {
+        if (stripos($location_type->name, "new_")===0) {
+          if (empty($changeDate)) {
+            $errors['address['.$key.']['.$changeDateKey.']'] = ts('Change date is required for a future address');
+          }
+        } elseif (stripos($location_type->name, "temp_")===0) {
+          if (empty($changeDate)) {
+            $errors['address['.$key.']['.$changeDateKey.']'] = ts('Change date is required for a future address');
+          }
+          if (empty($endDate)) {
+            $errors['address['.$key.']['.$endDateKey.']'] = ts('End date is required for a temporarily address');
+          }
+          if (!empty($changeDate) && !empty($endDate)) {
+            $changeDate = new DateTime($changeDate);
+            $endDate = new DateTime($endDate);
+            if ($endDate <= $changeDate) {
+              $errors['address['.$key.']['.$endDateKey.']'] = ts('End date must be greater than change date');
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to retrieve a the field key on a form for custom values
+ * 
+ * The field key is usually something like custom_x_aa
+ * You give this function the mask custom_x as a mask and it returns the key custom_x_aa
+ * 
+ * @param type $mask
+ * @param type $fields
+ * @return null
+ */
+function _futureaddress_get_custom_data_by_field_mask($mask, $fields) {
+  foreach($fields as $key => $field) {
+    if (strpos($key, $mask)===0) {
+      return $key;
+    }
+  }
+  return null;
+}
