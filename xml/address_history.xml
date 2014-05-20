@@ -379,5 +379,22 @@
       <column_name>location_type_label_71</column_name>
       <custom_group_name>Address_change</custom_group_name>
     </CustomField>
+    <CustomField>
+      <name>Change_date</name>
+      <label>Change date</label>
+      <data_type>Date</data_type>
+      <html_type>Select Date</html_type>
+      <is_required>0</is_required>
+      <is_searchable>1</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>1</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>change_date</column_name>
+      <custom_group_name>Address_change</custom_group_name>
+    </CustomField>
   </CustomFields>
 </CustomData>

@@ -112,10 +112,10 @@ function _futureaddress_civix_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL
  * @return CRM_Adresdatum_Upgrader
  */
 function _futureaddress_civix_upgrader() {
-  if (!file_exists(__DIR__.'/CRM/Futureaddress/Upgrader.php')) {
+  if (!file_exists(__DIR__.'/CRM/AddressChanger/Upgrader.php')) {
     return NULL;
   } else {
-    return CRM_Futureaddress_Upgrader_Base::instance();
+    return CRM_AddressChanger_Upgrader_Base::instance();
   }
 }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <CustomData>
-  <CustomGroups>
+      <CustomGroups>
     <CustomGroup>
       <name>address_date</name>
       <title>Future address</title>
@@ -19,25 +19,7 @@
       <is_reserved>0</is_reserved>
     </CustomGroup>
   </CustomGroups>
-  <CustomFields>
-    <CustomField>
-      <name>Change_date</name>
-      <label>Ingangsdatum</label>
-      <data_type>Date</data_type>
-      <html_type>Select Date</html_type>
-      <is_required>0</is_required>
-      <is_searchable>1</is_searchable>
-      <is_search_range>1</is_search_range>
-      <weight>1</weight>
-      <is_active>1</is_active>
-      <is_view>0</is_view>
-      <text_length>255</text_length>
-      <date_format>dd-mm-yy</date_format>
-      <note_columns>60</note_columns>
-      <note_rows>4</note_rows>
-      <column_name>change_date</column_name>
-      <custom_group_name>address_date</custom_group_name>
-    </CustomField>
+    <CustomFields>
     <CustomField>
       <name>End_date</name>
       <label>Beëindingsdatum</label>
@@ -56,23 +38,5 @@
       <column_name>end_date</column_name>
       <custom_group_name>address_date</custom_group_name>
     </CustomField>
-    <CustomField>
-      <name>Process_date</name>
-      <label>Verwerkingsdatum</label>
-      <data_type>Date</data_type>
-      <html_type>Select Date</html_type>
-      <is_required>0</is_required>
-      <is_searchable>0</is_searchable>
-      <is_search_range>0</is_search_range>
-      <weight>1</weight>
-      <is_active>0</is_active>
-      <is_view>0</is_view>
-      <text_length>255</text_length>
-      <date_format>dd-mm-yy</date_format>
-      <note_columns>60</note_columns>
-      <note_rows>4</note_rows>
-      <column_name>process_date</column_name>
-      <custom_group_name>address_date</custom_group_name>
-    </CustomField>
-  </CustomFields>
+    </CustomFields>
 </CustomData>

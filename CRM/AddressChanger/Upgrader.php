@@ -3,7 +3,7 @@
 /**
  * Collection of upgrade steps
  */
-class CRM_Futureaddress_Upgrader extends CRM_Futureaddress_Upgrader_Base {
+class CRM_AddressChanger_Upgrader extends CRM_AddressChanger_Upgrader_Base {
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
@@ -33,6 +33,16 @@ class CRM_Futureaddress_Upgrader extends CRM_Futureaddress_Upgrader_Base {
   
   public function upgrade_1002() {
     $this->executeCustomDataFile('xml/address_history.xml');
+    return true;
+  }
+  
+  public function upgrade_1003() {
+    $this->executeCustomDataFile('xml/upgrade_1003.xml');
+    return true;
+  }
+  
+  public function upgrade_1004() {
+    $this->executeCustomDataFile('xml/upgrade_1004.xml');
     return true;
   }
 

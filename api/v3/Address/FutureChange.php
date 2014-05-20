@@ -22,7 +22,7 @@ function _civicrm_api3_address_futurechange_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_address_futurechange($params) {
-  $changer = new CRM_Futureaddress_Changer();
+  $changer = new CRM_AddressChanger_Changer();
   $changer->checkAndChange();
   
   return civicrm_api3_create_success(array('message' => 'Updated '.$changer->getChangeCount().' addresses. Failed to update '.$changer->getFailureCount().' addresses'));

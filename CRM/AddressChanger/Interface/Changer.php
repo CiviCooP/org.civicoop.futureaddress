@@ -4,7 +4,7 @@
  * Interface for an address changer
  */
 
-interface CRM_Futureaddress_Interface_Changer {
+interface CRM_AddressChanger_Interface_Changer {
   
   /**
    * Find address which should be changed

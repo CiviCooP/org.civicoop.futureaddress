@@ -4,7 +4,7 @@
  * This class archives an addres under an activity
  */
 
-class CRM_Futureaddress_AddressHistory {
+class CRM_AddressChanger_AddressHistory {
   
   protected static $_instance;
   
@@ -12,12 +12,16 @@ class CRM_Futureaddress_AddressHistory {
   
   protected $custom_location_type_label_field;
   
+  protected $custom_changed_date_field;
+  
   protected function __construct() {
     $group = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'Address_change'));
     $gid = $group['id'];
     
     $loc_custom_id = $this->getCustomFieldId($gid, 'Location_type_label');
     $this->custom_location_type_label_field = 'custom_'.$loc_custom_id;
+    $change_date_id = $this->getCustomFieldId($gid, 'Change_date');
+    $this->custom_changed_date_field = 'custom_'.$change_date_id;
     
     $this->addField('Street_address', 'street_address', $gid);
     $this->addField('Street_number', 'street_number', $gid);
@@ -43,25 +47,43 @@ class CRM_Futureaddress_AddressHistory {
   
   public static function singleton() {
     if (!self::$_instance) {
-      self::$_instance = new CRM_Futureaddress_AddressHistory();
+      self::$_instance = new CRM_AddressChanger_AddressHistory();
     }
     return self::$_instance;
   }
   
-  public function generateActivityParams(CRM_Core_BAO_Address $address, &$params) {
+  public function generateActivityParams($address, &$params) {
     foreach($this->fields as $custom => $address_field) {
-      $val = $address->$address_field;
-      if ($val) {
-        $params[$custom] = $val;
+      if (isset($address[$address_field])) {
+        $params[$custom] = $address[$address_field];
       }
     }
     
     //get location type label
     $location_type = new CRM_Core_BAO_LocationType();
-    $location_type->id = $address->location_type_id;
+    $location_type->id = $address['location_type_id'];
     if ($location_type->find(true)) {
       $params[$this->custom_location_type_label_field] = $location_type->display_name;
     }
+    
+    //add change date to the activity
+    $change_date = $this->getChangeDateForAddress($address['id']);
+    if (!empty($change_date)) {
+      $params[$this->custom_changed_date_field] = $change_date;
+    }
+  }
+  
+  private function getChangeDateForAddress($address_id) {
+    $config = CRM_AddressChanger_Config::singleton();
+    $change_date_field = $config->getChangeDateField();
+    $change_date_field_id = $change_date_field['id'];
+    $custom_values['entityID'] = $address_id;
+    $custom_values['custom_'.$change_date_field_id] = '1';
+    $values = CRM_Core_BAO_CustomValueTable::getValues($custom_values);
+    if (isset($values['custom_'.$change_date_field_id])) {
+      return $values['custom_'.$change_date_field_id];
+    }
+    return '';
   }
   
   private function addField($custom_name, $address_field, $gid) {

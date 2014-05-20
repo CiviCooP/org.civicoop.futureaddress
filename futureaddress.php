@@ -120,7 +120,7 @@ function futureaddress_civicrm_custom($op, $groupID, $entityID, &$params) {
     return;
   }
   
-  $config = CRM_Futureaddress_Config::singleton();
+  $config = CRM_AddressChanger_Config::singleton();
   $cgroup = $config->getCustomGroup();
   $changeField = $config->getChangeDateField();
   $processField = $config->getProcessDateField();
@@ -135,4 +135,33 @@ function futureaddress_civicrm_custom($op, $groupID, $entityID, &$params) {
       }
     }
   }
+}
+
+/**
+ * Implementation of hook_civicrm_pre
+ * 
+ * Archive deleted addresses
+ * 
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_pre
+ * @param type $op
+ * @param type $objectName
+ * @param type $id
+ * @param type $params
+ */
+function futureaddress_civicrm_pre( $op, $objectName, $id, &$params ) {
+  $config = CRM_AddressChanger_Config::singleton();
+  if ($objectName == 'Address' && $op == 'delete' && $config->isArchiveOnDeleteEnabled()) {
+    //archive address
+    $archiver = CRM_AddressChanger_AddressArchiver::singleton();
+    $archiver->archiveIntoAnActivityAddress($params, ts('Address removed'));
+  } 
+}
+
+function futureaddress_civicrm_future_address_get_changer(CRM_Core_BAO_LocationType $location_type) {
+  $return = array();
+  $changer = CRM_AddressChanger_Factory::getChanger($location_type);
+  if ($changer instanceof CRM_AddressChanger_Interface_Changer) {
+    $return[$location_type->name] = $changer;
+  }
+  return $return;
 }
