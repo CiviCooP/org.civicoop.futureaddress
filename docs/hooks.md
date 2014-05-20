@@ -31,8 +31,12 @@ In the example below we want to disable the creation of an activity on the archi
 *In mymodule.php:*
 
     mymodule_civicrm_future_address_get_changer(CRM_Core_BAO_LocationType $location_type) {
-        $changer = new  CRM_MyModule_AddressChanger($future_location_type->id, $active_location_type->id);
-        return array($location_type->name => $changer);
+        if (stripos($location_type->name, "new_") === 0) {
+            //only change addresses for the future addresses
+            $changer = new  CRM_MyModule_AddressChanger($future_location_type->id, $active_location_type->id);
+            return array($location_type->name => $changer);
+        }
+        return array();
     }
 
 ## hook_civicrm_archive_address

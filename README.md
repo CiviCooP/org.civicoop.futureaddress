@@ -10,9 +10,14 @@ is archived as an activity.
 
 The location types you can use should have a name which start with *new_* For example a location type with the `name new_Home` and `label Future home` is used for entering a future address for the location type Home.
 
-## Set up
+## Set up future addresses
 
 1. Configure location types for the future with a name which starts with **new_**. E.g. the location type with the name new_Home correspondents to the location type Home.
+
+## Set up temporarily addresses
+
+1. Configure a location type for temporarily with a name which start with **temp_** E.g. the location type with the name temp_Home correspondents to the location type Home.
+2. Configure a corresponding future location type (see above).
 
 
 ## Developers
