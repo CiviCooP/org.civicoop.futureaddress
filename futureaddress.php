@@ -167,6 +167,56 @@ function futureaddress_civicrm_future_address_get_changer(CRM_Core_BAO_LocationT
 }
 
 /**
+ * Add javascript to show/hide the date fields for certain location types
+ * 
+ * Implementation of hook_civicrm_alterContent
+ * 
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterContent
+ * 
+ * @param type $content
+ * @param type $context
+ * @param type $tplName
+ * @param type $object
+ */
+function futureaddress_civicrm_alterContent(  &$content, $context, $tplName, &$object ) {
+  $config = CRM_AddressChanger_Config::singleton();
+  $cgroup = $config->getCustomGroup();
+  if ($object instanceof CRM_Contact_Form_Inline_Address) {
+    
+    $location_type_ids = array();
+    $dao = CRM_Core_DAO::executeQuery("SELECT * FROM `civicrm_location_type` WHERE `is_active` = '1'");
+    while($dao->fetch()) {
+      if (stripos($dao->name, "new_") === 0 || stripos($dao->name, "temp_") === 0) {
+        $location_type_ids[] = $dao->id;
+      }
+    }
+    
+    $locBlockNo = CRM_Utils_Request::retrieve('locno', 'Positive', CRM_Core_DAO::$_nullObject, TRUE, NULL, $_REQUEST);
+    $template = CRM_Core_Smarty::singleton();
+    $template->assign('blockId', $locBlockNo);
+    $template->assign('custom_group_id', $cgroup['id']);
+    $template->assign('custom_group_name', $cgroup['name']);
+    $template->assign('location_type_ids', json_encode($location_type_ids));
+    $content .= $template->fetch('CRM/Contact/Form/Edit/Address/futureaddress_js.tpl');
+  }
+  if ($object instanceof CRM_Contact_Form_Contact) {
+    $location_type_ids = array();
+    $dao = CRM_Core_DAO::executeQuery("SELECT * FROM `civicrm_location_type` WHERE `is_active` = '1'");
+    while($dao->fetch()) {
+      if (stripos($dao->name, "new_") === 0 || stripos($dao->name, "temp_") === 0) {
+        $location_type_ids[] = $dao->id;
+      }
+    }
+    
+    $template = CRM_Core_Smarty::singleton();
+    $template->assign('custom_group_id', $cgroup['id']);
+    $template->assign('custom_group_name', $cgroup['name']);
+    $template->assign('location_type_ids', json_encode($location_type_ids));
+    $content .= $template->fetch('CRM/Contact/Form/Edit/futureaddress_js.tpl');
+  }
+}
+
+/**
  * Validate the custom date fields on the address form.
  * 
  * Implementation of hook_civicrm_validateForm
