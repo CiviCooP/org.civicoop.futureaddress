@@ -58,11 +58,8 @@ class CRM_AddressChanger_AddressArchiver {
     $history = CRM_AddressChanger_AddressHistory::singleton();
     $history->generateActivityParams($addressData, $activityParams);
     
-    $hooks = CRM_Utils_Hook::singleton();
-    $hooks->invoke(2,
-      $addressData, $activityParams, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject,
-      'civicrm_address_change_activity_parameters'
-      );
+    $hooks = CRM_Futureaddress_Utils_HookInvoker::singleton();
+    $hooks->hook_civicrm_address_change_activity_parameters($addressData, $activityParams);
   }
   
 }

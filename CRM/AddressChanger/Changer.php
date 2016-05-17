@@ -34,8 +34,8 @@ class CRM_AddressChanger_Changer {
   }
   
   protected function getChanger(CRM_Core_BAO_LocationType $location_type) {
-    $hooks = CRM_Utils_Hook::singleton();
-    $return = $hooks->invoke(1, $location_type, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, 'civicrm_future_address_get_changer');
+    $hooks = CRM_Futureaddress_Utils_HookInvoker::singleton();
+    $return = $hooks->hook_civicrm_future_address_get_changer($location_type);
     if (isset($return[$location_type->name]) && $return[$location_type->name] instanceof CRM_AddressChanger_Interface_Changer) {
       return $return[$location_type->name];
     }

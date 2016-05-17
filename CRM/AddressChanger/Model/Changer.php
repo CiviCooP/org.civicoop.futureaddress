@@ -73,11 +73,7 @@ abstract class CRM_AddressChanger_Model_Changer implements CRM_AddressChanger_In
     $archiver = $this->getArchiver();
     $archiver->archiveIntoAnActivityAddress($data);
     
-    $hooks = CRM_Utils_Hook::singleton();
-    $hooks->invoke(1,
-      $objAddress, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject, CRM_Utils_Hook::$_nullObject,
-      'civicrm_archive_address'
-      );
+    CRM_Futureaddress_Utils_HookInvoker::singleton()->hook_civicrm_archive_address($objAddress);
   }
   
   protected function getArchiver() {
