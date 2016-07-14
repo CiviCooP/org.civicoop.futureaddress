@@ -1,19 +1,18 @@
 <?php
 
 /**
- * Address.FutureChange API specification (optional)
+ * FutureAddress.Change API specification (optional)
  * This is used for documentation and validation.
  *
  * @param array $spec description of fields supported by this API call
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRM/API+Architecture+Standards
  */
-function _civicrm_api3_address_futurechange_spec(&$spec) {
-  
+function _civicrm_api3_future_address_Change_spec(&$spec) {
 }
 
 /**
- * Address.FutureChange API
+ * FutureAddress.Change API
  *
  * @param array $params
  * @return array API result descriptor
@@ -21,10 +20,10 @@ function _civicrm_api3_address_futurechange_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_address_futurechange($params) {
+function civicrm_api3_future_address_Change($params) {
   $changer = new CRM_AddressChanger_Changer();
   $changer->checkAndChange();
-  
+
   return civicrm_api3_create_success(array('message' => 'Updated '.$changer->getChangeCount().' addresses. Failed to update '.$changer->getFailureCount().' addresses'));
 }
 
