@@ -12,10 +12,8 @@
   <version>1.2</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>4.4</ver>
     <ver>4.6</ver>
   </compatibility>
-  <comments>This is a new, undeveloped module</comments>
   <civix>
     <namespace>CRM/Adresdatum</namespace>
   </civix>
