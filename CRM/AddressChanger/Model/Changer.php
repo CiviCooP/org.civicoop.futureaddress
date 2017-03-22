@@ -98,12 +98,14 @@ abstract class CRM_AddressChanger_Model_Changer implements CRM_AddressChanger_In
       //remove the old address
       CRM_Core_BAO_Address::del($current->id);
     }
-   
+
+    // load the new address
     $params = array();
-    //CRM_Core_DAO::storeValues($objAddress, $params);
     $params['id'] = $objAddress->id;
+    $params = civicrm_api3('Address', 'getsingle', $params);
+
+    // set the new location type and set the future address to primary if current active address is primary
     $params['location_type_id'] = $change_to_locationtype_id;
-    //set future address to primary if current active address is primary
     if ($current->is_primary) {
       $params['is_primary']= '1';
     }
