@@ -1,0 +1,12 @@
+{
+  "name": "civicoop/org.civicoop.futureaddress",
+  "description": "Add functionality to make a primary address active in the future",
+  "type": "civicrm-module",
+  "authors": [
+    {
+      "name": "Jaap Jansma",
+      "email": "helpdesk@civicoop.org"
+    }
+  ],
+  "license": "AGPL-3.0"
+}
