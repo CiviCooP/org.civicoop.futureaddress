@@ -109,6 +109,9 @@ abstract class CRM_AddressChanger_Model_Changer implements CRM_AddressChanger_In
     if ($current->is_primary) {
       $params['is_primary']= '1';
     }
+		if ($current->is_billing) {
+			$params['is_billing'] = '1';
+		}
 
     civicrm_api3('Address', 'create', $params);
   }
